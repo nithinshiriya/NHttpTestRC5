@@ -1,0 +1,12 @@
+.vscode/
+app/**/*.js
+app/**/*.js.map
+app/**/*.css
+lib/
+node_modules/
+platforms/
+tmp/
+typings/
+!app/tests/*
+!plugins/jugaadcode-chart/*
+plugins/**/*.map
