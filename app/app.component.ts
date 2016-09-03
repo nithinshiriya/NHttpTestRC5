@@ -37,7 +37,7 @@ export class AppComponent implements AfterViewInit{
         var url = "http://servicetest.picpollapp.com/PollService.svc/rest/Test/nitheen";        
         return this.http.get(url, {headers:  this.headers})
         .map(res =>{ 
-                console.log(res);
+                console.log(JSON.stringify(res));
                return res;
             })
         .catch(this.handleError)    
