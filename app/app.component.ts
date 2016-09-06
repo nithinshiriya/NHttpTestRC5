@@ -1,6 +1,9 @@
-import {Component, AfterViewInit} from "@angular/core";
-import {Http, Headers, Response, } from "@angular/http";
-import {Observable} from "rxjs";
+import { Component, AfterViewInit } from "@angular/core";
+import { Http, Response } from "@angular/http";
+import { Observable } from "rxjs/Observable";
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 
 @Component({
@@ -9,15 +12,13 @@ import {Observable} from "rxjs";
 })
 export class AppComponent implements AfterViewInit{
     public counter: number = 16;
-        private headers: Headers;
 
     constructor(private http : Http){
-         this.headers = new Headers();
-         this.headers.append('Content-Type', 'application/json');
+
     }
 
     ngAfterViewInit(){
-        this.TestHttp()
+      this.TestHttp();
     }
 
     public get message(): string {
@@ -35,18 +36,20 @@ export class AppComponent implements AfterViewInit{
     private TestHttp(){      
         console.log("calling http get");
         var url = "http://servicetest.picpollapp.com/PollService.svc/rest/Test/nitheen";        
-        return this.http.get(url, {headers:  this.headers})
-        .map(res =>{ 
-                console.log(JSON.stringify(res));
-               return res;
-            })
-        .catch(this.handleError)    
-        .subscribe((data) =>{
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError)
+          .subscribe((data) => {
             console.log(data);
-        })    
-    }        
+          });  
+    }  
+  
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.data || { };
+  }
     
-    handleError(error: Response) {        
+   private handleError(error: Response) {        
         console.log('Error'+error);
         return Observable.throw(error.json() || 'Server error');
     }
